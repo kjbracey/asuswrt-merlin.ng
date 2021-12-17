@@ -431,6 +431,14 @@ ip6t_do_table(struct sk_buff *skb,
 		verdict = t->u.kernel.target->target(skb, &acpar);
 		if (verdict == IP6T_CONTINUE)
 			e = ip6t_next_entry(e);
+		else if (verdict == IP6T_RETURN) {		// added -- zzz
+			if (*stackptr == 0)
+				e = get_entry(table_base,
+				    private->underflow[hook]);
+			else
+				e = ip6t_next_entry(jumpstack[--*stackptr]);
+			continue;
+		}
 		else
 			/* Verdict */
 			break;
