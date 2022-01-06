@@ -1260,41 +1260,42 @@ static int start_tqos(void)
 	if (nvram_match("qos_ack", "on")) {
 		fprintf(f,
 			"# upload: TCP ACK\n"
-			"\t$TFAUL parent 1: prio 14 protocol ip u32 "
+			"\t$TFAUL parent 1: prio 13 protocol ip u32 "
 			"match ip protocol 6 0xff "			// TCP
-			"match u8 0x05 0x0f at 0 "			// IP header length
+			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
-			"match u8 0x10 0xff at 33 "			// ACK only
+			"match u8 0x10 0x1f at 33 "			// ACK only
+			"ip nofrag "
 			"flowid 1:10\n");
 	}
 	if (nvram_match("qos_syn", "on")) {
 		fprintf(f,
 			"# upload: TCP SYN\n"
-			"\t$TFAUL parent 1: prio 15 protocol ip u32 "
+			"\t$TFAUL parent 1: prio 13 protocol ip u32 "
 			"match ip protocol 6 0xff "			// TCP
-			"match u8 0x05 0x0f at 0 "			// IP header length
-			"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x02 0x02 at 33 "			// SYN,*
+			"ip firstfrag "
 			"flowid 1:10\n");
 	}
 	if (nvram_match("qos_fin", "on")) {
 		fprintf(f,
 			"# upload: TCP FIN\n"
-			"\t$TFAUL parent 1: prio 17 protocol ip u32 "
+			"\t$TFAUL parent 1: prio 13 protocol ip u32 "
 			"match ip protocol 6 0xff "			// TCP
-			"match u8 0x05 0x0f at 0 "			// IP header length
-			"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x01 0x01 at 33 "			// FIN,*
+			"ip firstfrag "
 			"flowid 1:10\n");
 	}
 	if (nvram_match("qos_rst", "on")) {
 		fprintf(f,
 			"# upload: TCP RST\n"
-			"\t$TFAUL parent 1: prio 19 protocol ip u32 "
+			"\t$TFAUL parent 1: prio 13 protocol ip u32 "
 			"match ip protocol 6 0xff "			// TCP
-			"match u8 0x05 0x0f at 0 "			// IP header length
-			"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x04 0x04 at 33 "			// RST,*
+			"ip firstfrag "
 			"flowid 1:10\n");
 	}
 	if (nvram_match("qos_icmp", "on")) {
@@ -1354,41 +1355,42 @@ static int start_tqos(void)
 		if (nvram_match("qos_ack", "on")) {
 			fprintf(f,
 				"# download: TCP ACK\n"
-				"\t$TFADL parent 2: prio 14 protocol ip u32 "
+				"\t$TFADL parent 2: prio 13 protocol ip u32 "
 				"match ip protocol 6 0xff "			// TCP
-				"match u8 0x05 0x0f at 0 "			// IP header length
+				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
-				"match u8 0x10 0xff at 33 "			// ACK only
+				"match u8 0x10 0x1f at 33 "			// ACK only
+				"match ip nofrag "
 				"flowid 2:10\n");
 		}
 		if (nvram_match("qos_syn", "on")) {
 			fprintf(f,
 				"# download: TCP SYN\n"
-				"\t$TFADL parent 2: prio 15 protocol ip u32 "
+				"\t$TFADL parent 2: prio 13 protocol ip u32 "
 				"match ip protocol 6 0xff "			// TCP
-				"match u8 0x05 0x0f at 0 "			// IP header length
-				"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x02 0x02 at 33 "			// SYN,*
+				"match ip firstfrag "
 				"flowid 2:10\n");
 		}
 		if (nvram_match("qos_fin", "on")) {
 			fprintf(f,
 				"# download: TCP FIN\n"
-				"\t$TFADL parent 2: prio 17 protocol ip u32 "
+				"\t$TFADL parent 2: prio 13 protocol ip u32 "
 				"match ip protocol 6 0xff "			// TCP
-				"match u8 0x05 0x0f at 0 "			// IP header length
-				"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x01 0x01 at 33 "			// FIN,*
+				"match ip firstfrag "
 				"flowid 2:10\n");
 		}
 		if (nvram_match("qos_rst", "on")) {
 			fprintf(f,
 				"# download: TCP RST\n"
-				"\t$TFADL parent 2: prio 19 protocol ip u32 "
+				"\t$TFADL parent 2: prio 13 protocol ip u32 "
 				"match ip protocol 6 0xff "			// TCP
-				"match u8 0x05 0x0f at 0 "			// IP header length
-				"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
+				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x04 0x04 at 33 "			// RST,*
+				"match ip firstfrag "
 				"flowid 2:10\n");
 		}
 		if (nvram_match("qos_icmp", "on")) {
