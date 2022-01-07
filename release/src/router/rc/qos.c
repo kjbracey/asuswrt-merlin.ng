@@ -1377,7 +1377,7 @@ static int start_tqos(void)
 			"match ip nofrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
-		if (ipv6_enabled() && *wan6face) {
+		if (ipv6_enabled()) {
 			fprintf(f,
 			"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 			"match ip6 protocol 6 0xff "			// TCP
@@ -1397,7 +1397,7 @@ static int start_tqos(void)
 			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
-		if (ipv6_enabled() && *wan6face) {
+		if (ipv6_enabled()) {
 			fprintf(f,
 			"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 			"match ip6 protocol 6 0xff "			// TCP
@@ -1416,7 +1416,7 @@ static int start_tqos(void)
 			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
-		if (ipv6_enabled() && *wan6face) {
+		if (ipv6_enabled()) {
 			fprintf(f,
 			"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 			"match ip6 protocol 6 0xff "			// TCP
@@ -1435,7 +1435,7 @@ static int start_tqos(void)
 			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
-		if (ipv6_enabled() && *wan6face) {
+		if (ipv6_enabled()) {
 			fprintf(f,
 			"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 			"match ip6 protocol 6 0xff "			// TCP
@@ -1447,7 +1447,7 @@ static int start_tqos(void)
 	if (nvram_match("qos_icmp", "on")) {
 		fputs("# upload: ICMP\n\t$TFAUL parent 1: prio 13 protocol ip u32 match ip protocol 1 0xff flowid 1:10\n", f);
 #ifdef RTCONFIG_IPV6
-		if (ipv6_enabled() && *wan6face) {
+		if (ipv6_enabled()) {
 			fputs("\t$TFAUL parent 1: prio 14 protocol ipv6 u32 match ip6 protocol 58 0xff flowid 1:10\n", f);
 		}
 #endif
@@ -1518,7 +1518,7 @@ static int start_tqos(void)
 				"match ip nofrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
-			if (ipv6_enabled() && *wan6face) {
+			if (ipv6_enabled()) {
 				fprintf(f,
 				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 				"match ip6 protocol 6 0xff "			// TCP
@@ -1538,7 +1538,7 @@ static int start_tqos(void)
 				"match ip firstfrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
-			if (ipv6_enabled() && *wan6face) {
+			if (ipv6_enabled()) {
 				fprintf(f,
 				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 				"match ip6 protocol 6 0xff "			// TCP
@@ -1557,7 +1557,7 @@ static int start_tqos(void)
 				"match ip firstfrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
-			if (ipv6_enabled() && *wan6face) {
+			if (ipv6_enabled()) {
 				fprintf(f,
 				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 				"match ip6 protocol 6 0xff "			// TCP
@@ -1576,7 +1576,7 @@ static int start_tqos(void)
 				"match ip firstfrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
-			if (ipv6_enabled() && *wan6face) {
+			if (ipv6_enabled()) {
 				fprintf(f,
 				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 				"match ip6 protocol 6 0xff "			// TCP
@@ -1588,7 +1588,7 @@ static int start_tqos(void)
 		if (nvram_match("qos_icmp", "on")) {
 			fputs("# download: ICMP\n\t$TFADL parent 2: prio 13 protocol ip u32 match ip protocol 1 0xff flowid 2:10\n", f);
 #ifdef RTCONFIG_IPV6
-			if (ipv6_enabled() && *wan6face) {
+			if (ipv6_enabled()) {
 				fputs("\t$TFADL parent 2: prio 14 protocol ipv6 u32 match ip6 protocol 58 0xff flowid 2:10\n", f);
 			}
 #endif
