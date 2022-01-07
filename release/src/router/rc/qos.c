@@ -1330,7 +1330,7 @@ static int start_tqos(void)
 			fprintf(f,
 			"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
 			"match ip6 protocol 6 0xff "			// TCP
-			"match u8 0x04 0x04 at 53 "			// FIN,*
+			"match u8 0x04 0x04 at 53 "			// RST,*
 			"flowid 1:10\n");
 		}
 #endif
@@ -1404,6 +1404,16 @@ static int start_tqos(void)
 				"match u8 0x10 0x1f at 33 "			// ACK only
 				"match ip nofrag "
 				"flowid 2:10\n");
+#ifdef RTCONFIG_IPV6
+			if (ipv6_enabled() && *wan6face) {
+				fprintf(f,
+				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
+				"match ip6 protocol 6 0xff "			// TCP
+				"match u16 0x0000 0xffc0 at 4 "			// payload length (0-63)
+				"match u8 0x10 0x1f at 53 "			// ACK only
+				"flowid 1:10\n");
+			}
+#endif
 		}
 		if (nvram_match("qos_syn", "on")) {
 			fprintf(f,
@@ -1414,6 +1424,15 @@ static int start_tqos(void)
 				"match u8 0x02 0x02 at 33 "			// SYN,*
 				"match ip firstfrag "
 				"flowid 2:10\n");
+#ifdef RTCONFIG_IPV6
+			if (ipv6_enabled() && *wan6face) {
+				fprintf(f,
+				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
+				"match ip6 protocol 6 0xff "			// TCP
+				"match u8 0x02 0x02 at 53 "			// SYN,*
+				"flowid 1:10\n");
+			}
+#endif
 		}
 		if (nvram_match("qos_fin", "on")) {
 			fprintf(f,
@@ -1424,6 +1443,15 @@ static int start_tqos(void)
 				"match u8 0x01 0x01 at 33 "			// FIN,*
 				"match ip firstfrag "
 				"flowid 2:10\n");
+#ifdef RTCONFIG_IPV6
+			if (ipv6_enabled() && *wan6face) {
+				fprintf(f,
+				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
+				"match ip6 protocol 6 0xff "			// TCP
+				"match u8 0x01 0x01 at 53 "			// FIN,*
+				"flowid 1:10\n");
+			}
+#endif
 		}
 		if (nvram_match("qos_rst", "on")) {
 			fprintf(f,
@@ -1434,9 +1462,23 @@ static int start_tqos(void)
 				"match u8 0x04 0x04 at 33 "			// RST,*
 				"match ip firstfrag "
 				"flowid 2:10\n");
+#ifdef RTCONFIG_IPV6
+			if (ipv6_enabled() && *wan6face) {
+				fprintf(f,
+				"\t$TFAUL parent 1: prio 14 protocol ipv6 u32 "
+				"match ip6 protocol 6 0xff "			// TCP
+				"match u8 0x04 0x04 at 53 "			// RST,*
+				"flowid 1:10\n");
+			}
+#endif
 		}
 		if (nvram_match("qos_icmp", "on")) {
 			fputs("# download: ICMP\n\t$TFADL parent 2: prio 13 protocol ip u32 match ip protocol 1 0xff flowid 2:10\n", f);
+#ifdef RTCONFIG_IPV6
+			if (ipv6_enabled() && *wan6face) {
+				fputs("\t$TFADL parent 2: prio 14 protocol ipv6 u32 match ip6 protocol 58 0xff flowid 2:10\n", f);
+			}
+#endif
 		}
 	}
 
