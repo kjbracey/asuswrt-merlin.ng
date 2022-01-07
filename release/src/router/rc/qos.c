@@ -1394,7 +1394,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x02 0x02 at 33 "			// SYN,*
-			"match ip firstfrag "
+			"match ip nofrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled()) {
@@ -1413,7 +1413,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x01 0x01 at 33 "			// FIN,*
-			"match ip firstfrag "
+			"match ip nofrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled()) {
@@ -1432,7 +1432,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x04 0x04 at 33 "			// RST,*
-			"match ip firstfrag "
+			"match ip nofrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled()) {
@@ -1535,7 +1535,7 @@ static int start_tqos(void)
 				"match ip protocol 6 0xff "			// TCP
 				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x02 0x02 at 33 "			// SYN,*
-				"match ip firstfrag "
+				"match ip nofrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
 			if (ipv6_enabled()) {
@@ -1554,7 +1554,7 @@ static int start_tqos(void)
 				"match ip protocol 6 0xff "			// TCP
 				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x01 0x01 at 33 "			// FIN,*
-				"match ip firstfrag "
+				"match ip nofrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
 			if (ipv6_enabled()) {
@@ -1573,7 +1573,7 @@ static int start_tqos(void)
 				"match ip protocol 6 0xff "			// TCP
 				"match ip ihl 0x05 0x0f "			// IP header length
 				"match u8 0x04 0x04 at 33 "			// RST,*
-				"match ip firstfrag "
+				"match ip nofrag "
 				"flowid 2:10\n");
 #ifdef RTCONFIG_IPV6
 			if (ipv6_enabled()) {
