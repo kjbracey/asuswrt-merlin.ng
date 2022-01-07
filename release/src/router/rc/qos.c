@@ -522,7 +522,7 @@ static void add_dscp_rules(FILE *f, const char *cmd, int parent)
 	// over any user rule. So with DSCP enabled, only Default Forwarding
 	// or unrecognised DSCP codes will follow the user rules.
 	fprintf(f,
-		"\n"
+		"# DSCP table\n"
 		"\t%s parent %d: prio 999 protocol all handle 7: u32 "
 		"divisor 64\n"						// DSCP perfect hash table
 		// HIGHEST
@@ -578,7 +578,7 @@ static void add_dscp_rules(FILE *f, const char *cmd, int parent)
 		"match u32 0 0 ht 7:1: class %d:50\n"
 		"\t%s parent %d: prio 999 protocol all u32 "		// CS1 (8) Low-Priority Data (legacy)
 		"match u32 0 0 ht 7:8: class %d:50\n"
-		// IPv4 rule linking to table
+		// IPv4 filter linking to table
 		"\t%s parent %d: prio 7 protocol ip u32 "
 		"match u32 0 0 link 7: hashkey mask 0x00fc0000 at 0\n",
 		cmd, parent,
@@ -1092,6 +1092,8 @@ static int add_qos_rules(char *pcWANIF)
 #endif
 
 	inuse |= (1 << i) | 1;  // default and highest are always built
+	if (nvram_match("qos_diffserv_ul", "on") || nvram_match("qos_diffserv_dl", "on"))
+		inuse |= 0x1f;  // diffserv uses all 5 levels
 	snprintf(q_inuse, sizeof(q_inuse), "%d", inuse);
 	nvram_set("qos_inuse", q_inuse);
 	QOSDBG("[qos] qos_inuse=%d\n", inuse);
