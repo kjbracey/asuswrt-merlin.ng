@@ -1265,7 +1265,7 @@ static int start_tqos(void)
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u16 0x0000 0xffc0 at 2 "			// total length (0-63)
 			"match u8 0x10 0x1f at 33 "			// ACK only
-			"ip nofrag "
+			"match ip nofrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled() && *wan6face) {
@@ -1285,7 +1285,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x02 0x02 at 33 "			// SYN,*
-			"ip firstfrag "
+			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled() && *wan6face) {
@@ -1304,7 +1304,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x01 0x01 at 33 "			// FIN,*
-			"ip firstfrag "
+			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled() && *wan6face) {
@@ -1323,7 +1323,7 @@ static int start_tqos(void)
 			"match ip protocol 6 0xff "			// TCP
 			"match ip ihl 0x05 0x0f "			// IP header length
 			"match u8 0x04 0x04 at 33 "			// RST,*
-			"ip firstfrag "
+			"match ip firstfrag "
 			"flowid 1:10\n");
 #ifdef RTCONFIG_IPV6
 		if (ipv6_enabled() && *wan6face) {
