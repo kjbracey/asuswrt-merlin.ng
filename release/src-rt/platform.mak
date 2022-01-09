@@ -5,10 +5,10 @@ ifeq ($(HND_ROUTER_AX_6756),y)
 export LINUXDIR := $(SRCBASE)/kernel/linux-4.19
 else
 export LINUXDIR := $(SRCBASE)/kernel/linux-4.1
-endif
-else
+endif # AX 6756
+else # HND_ROUTER
 export LINUXDIR := $(SRCBASE)/linux/linux-2.6
-endif
+endif # HND_ROUTER
 export BUILD := $(shell (gcc -dumpmachine))
 
 ifeq ($(ARM),y)
@@ -16,11 +16,11 @@ ifeq ($(ARM),y)
 ifeq ($(HND_ROUTER),y)
 export PRIVATE_EXTRACFLAGS := $(BRCM_COMMON_CFLAGS) -DHND_ROUTER -DLINUX26 -DLINUX_2_6_36 -DCONFIG_BCMWL5
 export EXTRACFLAGS := -march=armv7-a -marm -DHND_ROUTER -DCONFIG_BCMWL5 -D__ARM_ARCH_7A__
-else
+else # HND_ROUTER
  ifeq ($(EXTRACFLAGS),)
 export EXTRACFLAGS := -DBCMWPA2 -DBCMARM -fno-delete-null-pointer-checks -marm 
  endif
-endif
+endif # HND_ROUTER
 
  ifeq ($(HND_ROUTER),y)
  ifeq ($(HND_ROUTER_AX),y)
@@ -30,27 +30,27 @@ ifneq ($(findstring $(CUR_CHIP_PROFILE),47622 6750 6756),)
 export CROSS_COMPILE := /opt/toolchains/crosstools-arm-gcc-9.2-linux-4.19-glibc-2.30-binutils-2.32/usr/bin/arm-buildroot-linux-gnueabi-
 export CROSS_COMPILER := $(CROSS_COMPILE)
 export CONFIGURE := ./configure LD=$(CROSS_COMPILE)ld --host=arm-buildroot-linux-gnueabi
-else
+else # 47622 6750 6756
 export CROSS_COMPILE := /opt/toolchains/crosstools-arm-gcc-9.2-linux-4.19-glibc-2.30-binutils-2.32/usr/bin/arm-buildroot-linux-gnueabi-
 export CROSS_COMPILER := $(CROSS_COMPILE)
 export CONFIGURE := ./configure LD=$(CROSS_COMPILE)ld --host=arm-buildroot-linux-gnueabi
 export CONFIGURE_64 := ./configure LD=$(CROSS_COMPILE)ld --host=aarch64-buildroot-linux-gnu
 export HOSTCONFIG_64 := linux-aarch64 -DL_ENDIAN -march=armv8-a -fomit-frame-pointer -mabi=lp64 -ffixed-r8 -D__ARM_ARCH_8A__
-endif
-else
+endif # 47622 6750 6756
+else # AX 6756
 export CROSS_COMPILE := /opt/toolchains/crosstools-arm-gcc-5.5-linux-4.1-glibc-2.26-binutils-2.28.1/usr/bin/arm-buildroot-linux-gnueabi-
 export CROSS_COMPILER := $(CROSS_COMPILE)
 export CONFIGURE := ./configure LD=$(CROSS_COMPILE)ld --host=arm-buildroot-linux-gnueabi
 ifeq ($(BRCM_CHIP),4908)
 export CONFIGURE_64 := ./configure LD=$(CROSS_COMPILE_64)ld --host=aarch64-buildroot-linux-gnu
 export HOSTCONFIG_64 := linux-aarch64 -DL_ENDIAN -march=armv8-a -fomit-frame-pointer -mabi=lp64 -ffixed-r8 -D__ARM_ARCH_8A__
-endif
-endif
+endif # 4908
+endif # AX 6756
 ifeq ($(BRCM_CHIP),4908)
 export HOSTCONFIG := linux-armv4 -DL_ENDIAN -march=armv8-a -fomit-frame-pointer -mabi=aapcs-linux -marm -ffixed-r8 -msoft-float -D__ARM_ARCH_8A__
 else
 export HOSTCONFIG := linux-armv4 -DL_ENDIAN -march=armv7-a -fomit-frame-pointer -mabi=aapcs-linux -marm -ffixed-r8 -msoft-float -D__ARM_ARCH_7A__
-endif
+endif # 4908
 export TOP_PLATFORM := $(SRCBASE)/router-sysdep
 export BCMEX :=
 export ARCH := arm
@@ -59,12 +59,12 @@ ifeq ($(HND_ROUTER_AX_6756),y)
 export TOOLS := /opt/toolchains/crosstools-arm-gcc-9.2-linux-4.19-glibc-2.30-binutils-2.32
 else
 export TOOLS := /opt/toolchains/crosstools-arm-gcc-5.5-linux-4.1-glibc-2.26-binutils-2.28.1
-endif
+endif # AX 6756
 export RTVER := 0.9.32.1
 export BCMSUB := brcmarm
 export KERNEL_BINARY=$(LINUXDIR)/vmlinux
 export PRBM_EXT=_preb
- else
+ else # ROUTER_AX
 export PLATFORM_ARCH := arm-glibc
 export CROSS_COMPILE := /opt/toolchains/crosstools-arm-gcc-5.3-linux-4.1-glibc-2.22-binutils-2.25/usr/bin/arm-buildroot-linux-gnueabi-
 export CROSS_COMPILER := $(CROSS_COMPILE)
@@ -81,8 +81,8 @@ export RTVER := 0.9.32.1
 export BCMSUB := brcmarm
 export KERNEL_BINARY=$(LINUXDIR)/vmlinux
 export PRBM_EXT=_preb
- endif
- else
+ endif # ROUTER_AX
+ else # HND_ROUTER
 export KERNEL_BINARY=$(LINUXDIR)/arch/arm/boot/zImage
 export PLATFORM_ARCH := arm-uclibc
 export CROSS_COMPILE := arm-brcm-linux-uclibcgnueabi-
@@ -96,14 +96,14 @@ export HOST := arm-linux
 export TOOLS := $(SRCBASE)/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3
 export RTVER := 0.9.32.1
 export BCMSUB := brcmarm
- endif
-else ifeq ($(RTCONFIG_BCM_ARM_GCLIBC),y)
+ endif # HND_ROUTER
+else ifeq ($(RTCONFIG_BCM_ARM_GCLIBC),y) # ARM
 export CROSS_COMPILE ?= arm-buildroot-linux-gnueabi-
 export CONFIGURE := ./configure arm-linux --build=$(BUILD)
 export TOOLCHAIN := $(shell cd $(dir $(shell which $(CROSS_COMPILE)gcc))/../.. && pwd -P)
 export CFLAGS += -fno-strict-aliasing
 SUBMAKE_SETTINGS += ARCH=$(ARCH)
-else
+else # ARM_GCLIBC
  ifeq ($(EXTRACFLAGS),)
 export EXTRACFLAGS := -DBCMWPA2 -fno-delete-null-pointer-checks -mips32 -mtune=mips32
  endif
@@ -120,7 +120,7 @@ export HOST := mipsel-linux
 export TOOLS := $(SRCBASE)/../../tools/brcm/hndtools-mipsel-linux
 export RTVER := 0.9.30.1
 export TEST := 3
-endif
+endif # ARM_GCLIBC
 
 ifneq ($(HND_ROUTER),y)
 ifeq ($(PLATFORM),)
